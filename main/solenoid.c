@@ -4,7 +4,6 @@
 
 #include <inttypes.h>
 #include "driver/gpio.h"
-
 #include "solenoid.h"
 
 uint8_t  solenoid_states[SOLENOID_COUNT] = { 0 };

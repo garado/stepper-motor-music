@@ -1,7 +1,6 @@
 #!/bin/bash
 
 midifile=$1
-main="./main/main.c"
 
 # generate header
 xxd -n "midifile" --include $midifile > "./main/include/midifile.h"

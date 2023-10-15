@@ -16,10 +16,9 @@
 #define GPIO_OUT_PINS ((1ULL << STEPPER_0_PIN) | (1ULL << STEPPER_1_PIN)| \
                        (1ULL << STEPPER_2_PIN) | (1ULL << STEPPER_3_PIN) | (1ULL << DEBUG_LED))
 
-#define LEDC_MODE       LEDC_LOW_SPEED_MODE
-
 // These are the best settings to use.
 // With this you get almost the full range: C1 through G9
+#define LEDC_MODE       LEDC_LOW_SPEED_MODE
 #define LEDC_DUTY_RES   LEDC_TIMER_6_BIT
 #define LEDC_DUTY       31
 

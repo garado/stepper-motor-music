@@ -16,12 +16,10 @@
 
 #include "midi.h"
 #include "frequency.h"
+#include "midifile.h"
 
-/***** Specify Midi file and length here ******/
-#include "midi/god_multi.h"
-#define MIDI_LEN (playing_god_multi_mid_len)
-#define MIDI_ARR (playing_god_multi_mid)
-/**********************************************/
+#define MIDI_LEN (midifile_len)
+#define MIDI_ARR (midifile)
 
 #define LOW  0
 #define HIGH 1
