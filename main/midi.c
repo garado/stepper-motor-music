@@ -1,4 +1,7 @@
 
+// modified abique's midi parser to work with esp32
+// https://github.com/abique/midi-parser/
+
 #include <assert.h>
 #include <math.h>
 

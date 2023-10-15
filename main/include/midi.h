@@ -1,8 +1,5 @@
-/*
- * Simple MIDI parser implementation.
- * I used the following reference:
- * http://www.sonicspot.com/guide/midifiles.html
- */
+// modified abique's midi parser to work with esp32
+// https://github.com/abique/midi-parser/
 
 #pragma once
 
