@@ -3,10 +3,11 @@
 /* ▄█ ░█░ ██▄ █▀▀ █▀▀ ██▄ █▀▄ */
 
 #include <inttypes.h>
+#include <rom/ets_sys.h>
 #include "driver/gpio.h"
 #include "driver/ledc.h"
 #include "esp_log.h"
-#include "freertos/FreeRTOS.h"
+#include "esp_timer.h"
 
 #include "stepper.h"
 #include "frequency.h"
@@ -14,12 +15,12 @@
 #define LEDC_ENABLE
 
 // Stepper variables
+uint8_t   steppers_active = 0;
+uint8_t   notes_playing[STEPPER_COUNT] = { STEPPER_NO_NOTE_PLAYING };
+uint32_t  time_last_played[STEPPER_COUNT] = { 0 };
 gpio_num_t     pins[STEPPER_COUNT]     = { STEPPER_0_PIN,   STEPPER_1_PIN,  STEPPER_2_PIN,  STEPPER_3_PIN };
 ledc_channel_t channels[STEPPER_COUNT] = { LEDC_CHANNEL_0,  LEDC_CHANNEL_1, LEDC_CHANNEL_2, LEDC_CHANNEL_3 };
 ledc_timer_t   timers[STEPPER_COUNT]   = { LEDC_TIMER_0,    LEDC_TIMER_1,   LEDC_TIMER_2,   LEDC_TIMER_3 };
-uint8_t steppers_active = 0;
-uint8_t notes_playing[STEPPER_COUNT] = { STEPPER_NO_NOTE_PLAYING };
-uint32_t time_last_played[STEPPER_COUNT] = { 0 };
 
 void Stepper_Init()
 {
@@ -115,7 +116,7 @@ void Stepper_NoteOn(midi_midi_event e)
   steppers_active++;
   // printf("Set %d to %d (Active: %d)\n", num, e.param1, steppers_active);
   notes_playing[num] = e.param1;
-  time_last_played[num] = xTaskGetTickCount();
+  time_last_played[num] = esp_timer_get_time();
 }
 
 void Stepper_AllOff(void)
@@ -128,13 +129,14 @@ void Stepper_AllOff(void)
 }
 
 /* @function Stepper_FrequencyTest(void)
- * @brief Runs through all possible notes from highest to lowest on the first stepper. */
+ * @brief Runs through all possible notes from highest to lowest on the first stepper.
+ *        Quarter second delay between notes. */
 void Stepper_FrequencyTest(void)
 {
   ESP_ERROR_CHECK(ledc_timer_resume(LEDC_MODE, timers[0]));
   for (int i = 127; i >= 0; i--) {
     printf("Note %d: %s%d (%dHz)\n", i, note_names[i % 12], i / 12, (int) frequency[i]);
     ESP_ERROR_CHECK(ledc_set_freq(LEDC_MODE, timers[0], (int) frequency[i]));
-    vTaskDelay(250 / portTICK_PERIOD_MS);
+    ets_delay_us(250);
   }
 }

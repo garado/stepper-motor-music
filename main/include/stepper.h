@@ -24,7 +24,6 @@
 
 #define OCTAVE 12
 #define LOWEST_PLAYABLE_NOTE  12
-
 #define STEPPER_NO_NOTE_PLAYING 128 // valid midi note range is 0-127
 
 void Stepper_Init(void);
